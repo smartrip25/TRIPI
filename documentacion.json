@@ -1,0 +1,122 @@
+[
+  {
+    "pantalla": "Inicio",
+    "funcionalidad": "Pantalla principal con acceso rápido a funciones clave como comparar precios, reservar viajes y ver actividad reciente.",
+    "preguntas_ejemplo": [
+      "¿Qué puedo hacer en la pantalla de inicio?",
+      "¿Dónde comparo precios?",
+      "¿Cómo empiezo un viaje desde el inicio?",
+      "¿Cómo vuelvo al inicio?",
+      "¿Puedo ver una ayuda rápida desde aquí?",
+      "¿Cómo vuelvo a ver estas opciones más adelante?"
+    ],
+    "respuestas_sugeridas": [
+      "En la pantalla de inicio podés acceder rápidamente a funciones como comparar precios, reservar un viaje o revisar tu actividad reciente.",
+      "Para comparar precios, tocá el botón correspondiente en la pantalla de inicio.",
+      "Desde el inicio podés comenzar una reserva o consultar información útil como el estado de tu cuenta.",
+      "Tocá el ícono de casa en la barra de navegación para volver al inicio en cualquier momento.",
+      "Sí, la app incluye un botón de ayuda o tutorial rápido que podés consultar desde la pantalla de inicio.",
+      "La pantalla de inicio siempre está accesible desde la barra de navegación inferior."
+    ]
+  },
+  {
+    "pantalla": "Comparar precios",
+    "funcionalidad": "Permite comparar tarifas entre diferentes servicios de transporte como Uber, Didi, y Cabify.",
+    "preguntas_ejemplo": [
+      "¿Cómo comparo precios entre apps?",
+      "¿Qué servicios puedo comparar?",
+      "¿Puedo ver cuál es más barato?",
+      "¿La comparación incluye tiempo estimado de llegada?",
+      "¿Actualiza los precios en tiempo real?",
+      "¿Qué pasa si un servicio no aparece?"
+    ],
+    "respuestas_sugeridas": [
+      "En la sección 'Comparar precios' podés ver las tarifas estimadas de Uber, Didi y Cabify para un mismo trayecto.",
+      "Sí, la app te muestra cuál es la opción más económica en tiempo real.",
+      "Simplemente ingresá origen y destino y te mostraremos las mejores opciones.",
+      "También vas a ver el tiempo estimado de llegada junto con el costo.",
+      "Los precios se actualizan automáticamente según los datos que reciben de cada servicio.",
+      "Si un servicio no aparece, puede ser que no haya disponibilidad o problema de conexión; podés intentar más tarde."
+    ]
+  },
+  {
+    "pantalla": "Reservar",
+    "funcionalidad": "Permite elegir origen y destino, seleccionar el servicio y confirmar la reserva.",
+    "preguntas_ejemplo": [
+      "¿Cómo reservo un viaje?",
+      "¿Puedo elegir el tipo de auto?",
+      "¿Dónde ingreso el destino?",
+      "¿Qué pasa si me equivoco de dirección?",
+      "¿Puedo agendar un viaje para más tarde?",
+      "¿Qué servicios están disponibles para reservar?"
+    ],
+    "respuestas_sugeridas": [
+      "Para reservar, ingresá el punto de partida y el destino, luego seleccioná el servicio que preferís.",
+      "Sí, en algunos servicios podés elegir el tipo de vehículo.",
+      "El destino se ingresa en el campo indicado dentro de la sección 'Reservar'.",
+      "Podés editar la dirección antes de confirmar la reserva.",
+      "Sí, algunos servicios permiten programar viajes para más tarde.",
+      "Dependiendo de tu ubicación, podés elegir entre Uber, Didi, Cabify y otros disponibles."
+    ]
+  },
+  {
+    "pantalla": "Cuenta",
+    "funcionalidad": "Gestión del perfil, datos personales, métodos de pago y configuración de la cuenta.",
+    "preguntas_ejemplo": [
+      "¿Cómo cambio mi contraseña?",
+      "¿Dónde están mis datos personales?",
+      "¿Puedo actualizar mi email?",
+      "¿Dónde configuro mis preferencias?",
+      "¿Puedo cerrar sesión desde aquí?",
+      "¿Dónde veo mis métodos de pago guardados?"
+    ],
+    "respuestas_sugeridas": [
+      "Desde la sección 'Cuenta' podés modificar tu información personal y cambiar la contraseña.",
+      "Tus datos personales están en la sección 'Cuenta' > 'Perfil'.",
+      "Sí, tocá sobre tu email actual para editarlo.",
+      "Tus preferencias se configuran dentro de 'Cuenta' > 'Configuración'.",
+      "Sí, en 'Cuenta' vas a encontrar la opción para cerrar sesión.",
+      "Tus métodos de pago están en la sección 'Método de pago' dentro del menú de cuenta."
+    ]
+  },
+  {
+    "pantalla": "Actividad",
+    "funcionalidad": "Historial de viajes y comparaciones recientes.",
+    "preguntas_ejemplo": [
+      "¿Dónde veo mis viajes anteriores?",
+      "¿Puedo ver los precios que comparé antes?",
+      "¿Cómo consulto mis actividades recientes?",
+      "¿Puedo ver el resumen de mis viajes?",
+      "¿Cómo borro mi historial?",
+      "¿La app guarda todas mis búsquedas?"
+    ],
+    "respuestas_sugeridas": [
+      "La sección 'Actividad' muestra tu historial de viajes y comparaciones.",
+      "Sí, en 'Actividad' podés revisar tus búsquedas recientes.",
+      "Accedé a 'Actividad' desde el menú principal para ver todos tus movimientos.",
+      "Sí, podés ver un resumen de todos tus viajes y comparaciones recientes.",
+      "Actualmente no es posible borrar el historial, pero podés ocultar elementos.",
+      "La app guarda automáticamente las búsquedas para que las consultes más tarde."
+    ]
+  },
+  {
+    "pantalla": "Método de pago",
+    "funcionalidad": "Configuración de tarjetas o métodos de pago preferidos.",
+    "preguntas_ejemplo": [
+      "¿Cómo agrego una tarjeta?",
+      "¿Puedo pagar en efectivo?",
+      "¿Dónde cambio el método de pago?",
+      "¿Cómo elimino una tarjeta?",
+      "¿Se pueden guardar varios métodos?",
+      "¿Es seguro guardar mi tarjeta?"
+    ],
+    "respuestas_sugeridas": [
+      "Para agregar una tarjeta, andá a 'Método de pago' y seleccioná 'Agregar'.",
+      "Dependiendo del servicio, algunos permiten pagar en efectivo.",
+      "Podés configurar tu método de pago desde el menú de cuenta o antes de reservar.",
+      "Para eliminar una tarjeta, mantené presionado el método y seleccioná 'Eliminar'.",
+      "Sí, podés guardar varios métodos de pago y elegir uno por defecto.",
+      "La app usa cifrado y cumple con normas de seguridad para proteger tus datos."
+    ]
+  }
+]
