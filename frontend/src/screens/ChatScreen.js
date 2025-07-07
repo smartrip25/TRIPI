@@ -42,19 +42,16 @@ const ChatScreen = () => {
     setInput('');
 
     try {
-      const res = await fetch('http://<TU_IP>:3000/api/chat', {
+      const res = await fetch('http://localhost:3000/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: input, tool, model, temperature }),
+        body: JSON.stringify({ message: input }),
       });
       const data = await res.json();
 
       const assistantMessage = {
         sender: 'assistant',
         text: data.response ?? 'No hubo respuesta.',
-        tool,
-        model,
-        temperature,
       };
 
       setMessages((prev) => [...prev, assistantMessage]);

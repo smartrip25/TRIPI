@@ -1,6 +1,12 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
-import runAgent from '../frontend/agent.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const runAgent = await import(path.join(__dirname, '../frontend/agent.js')).then(mod => mod.default);
 
 const app = express();
 const port = 3000;

@@ -1,6 +1,11 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-const DATA_FILE = './data/faq.json';
+import { readFileSync, writeFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DATA_FILE = join(__dirname, '../data/faq.json');
 
 class FAQManager {
   constructor() {
