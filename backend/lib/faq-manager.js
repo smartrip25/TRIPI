@@ -1,13 +1,14 @@
 import { readFileSync, writeFileSync } from 'fs';
-
-import { readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
+import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_FILE = join(__dirname, '../data/faq.json');
+// Para obtener __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-class FAQManager {
+const DATA_FILE = path.join(__dirname, '../data/faq.json');
+
+export class FAQManager {
   constructor() {
     this.pantallas = [];
     this.cargarDesdeJson();
@@ -52,7 +53,9 @@ class FAQManager {
       });
     }
 
-    return resultado.length > 0 ? resultado : [{ respuesta: "No encontré una respuesta exacta, ¿querés reformular la pregunta?" }];
+    return resultado.length > 0
+      ? resultado
+      : [{ respuesta: "No encontré una respuesta exacta, ¿querés reformular la pregunta?" }];
   }
 
   listarPreguntasPorPantalla(nombrePantalla) {
@@ -68,5 +71,3 @@ class FAQManager {
     return this.pantallas.map(p => p.pantalla);
   }
 }
-
-export { FAQManager };
