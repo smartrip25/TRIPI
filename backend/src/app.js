@@ -8,6 +8,11 @@ const app = express();
 app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ message: 'Tripi API is running!', status: 'ok' });
+});
+
 // Routes
 app.use('/api', apiRoutes);
 

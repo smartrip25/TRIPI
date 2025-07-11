@@ -22,7 +22,7 @@ export const chatController = async (req, res) => {
   try {
     // Intentar usar el agente principal, si falla usar el simple
     let response;
-    if (elAgente) {
+    if (elAgente && typeof elAgente.chat === 'function') {
       try {
         response = await elAgente.chat({ message });
         console.log('Using main agent');

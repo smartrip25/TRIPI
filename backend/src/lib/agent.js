@@ -4,7 +4,7 @@ import { z } from "zod";
 import { FAQManager } from "./faq-manager.js";
 
 // Configuración desde variables de entorno
-const DEBUG = process.env.DEBUG === 'true' || true;
+const DEBUG = process.env.DEBUG === 'true' || false;
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:1.7b';
 
@@ -19,17 +19,20 @@ Respondé con claridad, usando respuestas sugeridas, y sin explicar el proceso i
 `.trim();
 
 // Configuración de Ollama con manejo de errores
-let ollamaLLM;
-try {
-  ollamaLLM = new Ollama({
-    model: OLLAMA_MODEL,
-    temperature: 0.05,
-    timeout: 2 * 60 * 1000,
-    baseUrl: OLLAMA_BASE_URL,
-  });
-} catch (error) {
-  console.warn('Error initializing Ollama LLM:', error.message);
-  ollamaLLM = null;
+let ollamaLLM = null;
+// Disable Ollama in serverless environment
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  try {
+    ollamaLLM = new Ollama({
+      model: OLLAMA_MODEL,
+      temperature: 0.05,
+      timeout: 2 * 60 * 1000,
+      baseUrl: OLLAMA_BASE_URL,
+    });
+  } catch (error) {
+    console.warn('Error initializing Ollama LLM:', error.message);
+    ollamaLLM = null;
+  }
 }
 
 const buscarPorPreguntaTool = tool({
