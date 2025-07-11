@@ -1,21 +1,7 @@
+import elAgente from '../lib/agent.js';
 
-import express from 'express';
-import cors from 'cors';
-
-const app = express();
-const port = 3000;
-
-app.use(cors({ origin: '*', credentials: true }));
-app.use(express.json());
-
-// Test endpoint to verify server is working
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Server is running correctly!' });
-});
-
-// Función simple del agente
-async function elAgente(message) {
-  // Por ahora, una respuesta simple
+// Función simple del agente (fallback)
+async function elAgenteSimple(message) {
   return {
     data: {
       result: `Hola! Recibí tu mensaje: "${message}". Soy Tripi, tu asistente virtual. ¿En qué puedo ayudarte?`
@@ -23,7 +9,7 @@ async function elAgente(message) {
   };
 }
 
-app.post('/api/chat', async (req, res) => {
+export const chatController = async (req, res) => {
   console.log('Received POST request to /api/chat');
   console.log('Request body:', req.body);
   
@@ -34,7 +20,21 @@ app.post('/api/chat', async (req, res) => {
   }
 
   try {
-    const response = await elAgente(message);
+    // Intentar usar el agente principal, si falla usar el simple
+    let response;
+    if (elAgente) {
+      try {
+        response = await elAgente.chat({ message });
+        console.log('Using main agent');
+      } catch (error) {
+        console.log('Error with main agent, using simple agent:', error.message);
+        response = await elAgenteSimple(message);
+      }
+    } else {
+      console.log('Main agent not available, using simple agent');
+      response = await elAgenteSimple(message);
+    }
+
     let textResponse = "";
     let parsedResponse = response;
 
@@ -63,16 +63,4 @@ app.post('/api/chat', async (req, res) => {
     console.error('Error processing message:', error);
     res.status(500).json({ error: 'Failed to process message' });
   }
-});
-
-// Catch all other routes
-app.use('*', (req, res) => {
-  console.log(`404 - Route not found: ${req.method} ${req.originalUrl}`);
-  res.status(404).json({ error: 'Route not found' });
-});
-
-app.listen(port, () => {
-  console.log(`✅ Server corriendo en http://localhost:${port}`);
-  console.log(`📝 Test endpoint: http://localhost:${port}/api/test`);
-  console.log(`💬 Chat endpoint: http://localhost:${port}/api/chat`);
-});
+};

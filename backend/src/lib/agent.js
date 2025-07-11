@@ -1,9 +1,12 @@
 import { tool, agent } from "llamaindex";
 import { Ollama } from "@llamaindex/ollama";
 import { z } from "zod";
-import { FAQManager } from "./lib/faq-manager.js";
+import { FAQManager } from "./faq-manager.js";
 
-const DEBUG = true;
+// Configuración desde variables de entorno
+const DEBUG = process.env.DEBUG === 'true' || true;
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:1.7b';
 
 // Instancia de preguntas frecuentes
 const faq = new FAQManager();
@@ -15,11 +18,19 @@ Tu tarea es responder preguntas frecuentes sobre funciones como: comparar precio
 Respondé con claridad, usando respuestas sugeridas, y sin explicar el proceso interno.
 `.trim();
 
-const ollamaLLM = new Ollama({
-  model: "qwen3:1.7b",
-  temperature: 0.05,
-  timeout: 2 * 60 * 1000,
-});
+// Configuración de Ollama con manejo de errores
+let ollamaLLM;
+try {
+  ollamaLLM = new Ollama({
+    model: OLLAMA_MODEL,
+    temperature: 0.05,
+    timeout: 2 * 60 * 1000,
+    baseUrl: OLLAMA_BASE_URL,
+  });
+} catch (error) {
+  console.warn('Error initializing Ollama LLM:', error.message);
+  ollamaLLM = null;
+}
 
 const buscarPorPreguntaTool = tool({
   name: "buscarPorPregunta",
@@ -54,15 +65,23 @@ const listarPantallasTool = tool({
   },
 });
 
-const elAgente = agent({
-  tools: [
-    buscarPorPreguntaTool,
-    listarPreguntasPorPantallaTool,
-    listarPantallasTool,
-  ],
-  llm: ollamaLLM,
-  verbose: DEBUG,
-  systemPrompt: systemPrompt,
-});
+// Crear agente solo si Ollama está disponible
+let elAgente = null;
+if (ollamaLLM) {
+  try {
+    elAgente = agent({
+      tools: [
+        buscarPorPreguntaTool,
+        listarPreguntasPorPantallaTool,
+        listarPantallasTool,
+      ],
+      llm: ollamaLLM,
+      verbose: DEBUG,
+      systemPrompt: systemPrompt,
+    });
+  } catch (error) {
+    console.warn('Error creating agent:', error.message);
+  }
+}
 
-export default elAgente;
+export default elAgente; 
