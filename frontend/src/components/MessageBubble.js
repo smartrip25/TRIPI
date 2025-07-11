@@ -4,9 +4,12 @@ import { View, Text, StyleSheet } from 'react-native';
 export default function MessageBubble({ text, from }) {
   const isUser = from === 'user';
 
+  // Ensure text is always a string
+  const displayText = typeof text === 'string' ? text : String(text || '');
+
   return (
     <View style={[styles.message, isUser ? styles.user : styles.bot]}>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={styles.text}>{displayText}</Text>
     </View>
   );
 }
@@ -28,5 +31,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    color: '#333',
   },
 });
