@@ -1,14 +1,5 @@
 import elAgente from '../lib/agent.js';
 
-// Función simple del agente (fallback)
-async function elAgenteSimple(message) {
-  return {
-    data: {
-      result: `Hola! Recibí tu mensaje: "${message}". Soy Tripi, tu asistente virtual. ¿En qué puedo ayudarte?`
-    }
-  };
-}
-
 export const chatController = async (req, res) => {
   console.log('Received POST request to /api/chat');
   console.log('Request body:', req.body);
@@ -20,38 +11,17 @@ export const chatController = async (req, res) => {
   }
 
   try {
-    // Intentar usar el agente principal, si falla usar el simple
-    let response;
-    if (elAgente && typeof elAgente.chat === 'function') {
-      try {
-        response = await elAgente.chat({ message });
-        console.log('Using main agent');
-      } catch (error) {
-        console.log('Error with main agent, using simple agent:', error.message);
-        response = await elAgenteSimple(message);
-      }
-    } else {
-      console.log('Main agent not available, using simple agent');
-      response = await elAgenteSimple(message);
-    }
-
+    // Usar el agente asíncrono
+    const response = await elAgente.chat(message);
+    
     let textResponse = "";
-    let parsedResponse = response;
-
-    if (typeof response === "string") {
-      try {
-        parsedResponse = JSON.parse(response);
-      } catch {
-        parsedResponse = response;
-      }
-    }
-
-    if (parsedResponse && parsedResponse.data && typeof parsedResponse.data.result === "string") {
-      textResponse = parsedResponse.data.result;
-    } else if (typeof parsedResponse === "string") {
-      textResponse = parsedResponse;
+    
+    if (response && response.data && typeof response.data.result === "string") {
+      textResponse = response.data.result;
+    } else if (typeof response === "string") {
+      textResponse = response;
     } else {
-      textResponse = JSON.stringify(parsedResponse);
+      textResponse = JSON.stringify(response);
     }
 
     // Limpiar respuesta (sacar etiquetas <think>)

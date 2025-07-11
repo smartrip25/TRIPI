@@ -1,12 +1,9 @@
-import { tool, agent } from "llamaindex";
-import { Ollama } from "@llamaindex/ollama";
-import { z } from "zod";
 import { FAQManager } from "./faq-manager.js";
 
 // Configuración desde variables de entorno
 const DEBUG = process.env.DEBUG === 'true' || false;
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:1.7b';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3';
 
 // Instancia de preguntas frecuentes
 const faq = new FAQManager();
@@ -18,73 +15,96 @@ Tu tarea es responder preguntas frecuentes sobre funciones como: comparar precio
 Respondé con claridad, usando respuestas sugeridas, y sin explicar el proceso interno.
 `.trim();
 
-// Configuración de Ollama con manejo de errores
-let ollamaLLM = null;
-// Disable Ollama in serverless environment
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+// Función para hacer request a Ollama usando fetch
+async function callOllamaAPI(prompt) {
   try {
-    ollamaLLM = new Ollama({
-      model: OLLAMA_MODEL,
-      temperature: 0.05,
-      timeout: 2 * 60 * 1000,
-      baseUrl: OLLAMA_BASE_URL,
+    const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: OLLAMA_MODEL,
+        prompt: prompt,
+        stream: false
+      })
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.response;
   } catch (error) {
-    console.warn('Error initializing Ollama LLM:', error.message);
-    ollamaLLM = null;
+    console.error('Error calling Ollama API:', error);
+    throw error;
   }
 }
 
-const buscarPorPreguntaTool = tool({
-  name: "buscarPorPregunta",
-  description: "Usa esta herramienta para encontrar respuestas sugeridas a preguntas de usuarios",
-  parameters: z.object({
-    pregunta: z.string().describe("La pregunta del usuario"),
-  }),
-  execute: ({ pregunta }) => {
-    const resultados = faq.buscarPorPregunta(pregunta);
-    return JSON.stringify(resultados);
-  },
-});
+// Función para buscar en FAQ y generar respuesta
+async function buscarEnFAQ(pregunta) {
+  const resultados = faq.buscarPorPregunta(pregunta);
+  
+  if (resultados && resultados.length > 0) {
+    const mejorRespuesta = resultados[0];
+    return mejorRespuesta.respuesta || "No encontré una respuesta específica para tu pregunta. ¿Podrías reformularla?";
+  }
+  
+  return null;
+}
 
-const listarPreguntasPorPantallaTool = tool({
-  name: "listarPreguntasPorPantalla",
-  description: "Devuelve preguntas y respuestas frecuentes de una pantalla específica",
-  parameters: z.object({
-    pantalla: z.string().describe("El nombre de la pantalla (ej: Cuenta, Inicio, Comparar precios)"),
-  }),
-  execute: ({ pantalla }) => {
-    const preguntas = faq.listarPreguntasPorPantalla(pantalla);
-    return JSON.stringify(preguntas);
-  },
-});
-
-const listarPantallasTool = tool({
-  name: "listarPantallas",
-  description: "Devuelve todas las secciones/pantallas de la app con preguntas frecuentes",
-  parameters: z.object({}),
-  execute: () => {
-    return JSON.stringify(faq.listarTodasLasPantallas());
-  },
-});
-
-// Crear agente solo si Ollama está disponible
-let elAgente = null;
-if (ollamaLLM) {
+// Función principal del agente
+async function chatWithAgent(message) {
   try {
-    elAgente = agent({
-      tools: [
-        buscarPorPreguntaTool,
-        listarPreguntasPorPantallaTool,
-        listarPantallasTool,
-      ],
-      llm: ollamaLLM,
-      verbose: DEBUG,
-      systemPrompt: systemPrompt,
-    });
+    // Primero intentar buscar en FAQ
+    const faqResponse = await buscarEnFAQ(message);
+    
+    if (faqResponse) {
+      return {
+        data: {
+          result: faqResponse
+        }
+      };
+    }
+
+    // Si no hay respuesta en FAQ, usar Ollama
+    const fullPrompt = `${systemPrompt}\n\nUsuario: ${message}\n\nTripi:`;
+    
+    if (DEBUG) {
+      console.log('Calling Ollama with prompt:', fullPrompt);
+    }
+    
+    const ollamaResponse = await callOllamaAPI(fullPrompt);
+    
+    return {
+      data: {
+        result: ollamaResponse
+      }
+    };
   } catch (error) {
-    console.warn('Error creating agent:', error.message);
+    console.error('Error in chatWithAgent:', error);
+    
+    // Fallback: buscar en FAQ sin Ollama
+    const fallbackResponse = await buscarEnFAQ(message);
+    
+    if (fallbackResponse) {
+      return {
+        data: {
+          result: fallbackResponse
+        }
+      };
+    }
+    
+    return {
+      data: {
+        result: "Hola! Soy Tripi, tu asistente virtual para la app SmarTrip. ¿En qué puedo ayudarte? Podés preguntarme sobre comparar precios, reservar viajes, gestionar tu cuenta, métodos de pago y más."
+      }
+    };
   }
 }
 
-export default elAgente; 
+// Export the agent
+export default {
+  chat: chatWithAgent
+}; 
