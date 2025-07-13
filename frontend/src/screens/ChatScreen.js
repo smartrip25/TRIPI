@@ -42,19 +42,33 @@ const ChatScreen = () => {
   // Recuperar historial
   useEffect(() => {
     AsyncStorage.getItem('chatHistory').then((data) => {
-      if (data) setMessages(JSON.parse(data));
+      if (data) {
+        try {
+          setMessages(JSON.parse(data));
+        } catch (parseError) {
+          console.error('Error parsing chat history:', parseError);
+          setMessages([]);
+        }
+      }
+    }).catch((error) => {
+      console.error('Error loading chat history:', error);
+      setMessages([]);
     });
   }, []);
 
   // Guardar historial
   useEffect(() => {
-    AsyncStorage.setItem('chatHistory', JSON.stringify(messages));
+    if (messages.length > 0) {
+      AsyncStorage.setItem('chatHistory', JSON.stringify(messages)).catch((error) => {
+        console.error('Error saving chat history:', error);
+      });
+    }
   }, [messages]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { sender: 'user', text: input };
+    const userMessage = { sender: 'user', text: input.trim() };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setLoading(true);
@@ -71,24 +85,29 @@ const ChatScreen = () => {
       });
 
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        const errorData = await res.text();
+        throw new Error(`HTTP error! status: ${res.status}, message: ${errorData}`);
       }
 
       const data = await res.json();
 
       const assistantMessage = {
         sender: 'assistant',
-        text: data.response ?? 'No hubo respuesta.',
+        text: data.response ?? 'No hubo respuesta del servidor.',
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Network error:', error);
+      const errorMessage = error.message.includes('fetch') 
+        ? 'Error de conexión. Verifica que el servidor esté ejecutándose en http://localhost:3000'
+        : `Error: ${error.message}`;
+        
       setMessages((prev) => [
         ...prev,
         { 
           sender: 'assistant', 
-          text: 'Error de conexión. Verifica que el servidor esté ejecutándose en http://localhost:3000' 
+          text: errorMessage
         },
       ]);
       Alert.alert('Error de Conexión', 'No se pudo conectar con el servidor. Verifica que esté ejecutándose.');

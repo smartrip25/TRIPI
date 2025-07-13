@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node api/index.js",
-    "dev": "node api/index.js",
-    "test-ollama": "node test-ollama.js"
+    "start": "node start-server.js",
+    "dev": "node start-server.js",
+    "server": "node src/app.js",
+    "test-ollama": "node test-ollama.js",
+    "test-ngrok": "node test-ngrok-connection.js"
   },
   "keywords": [],
   "author": "",

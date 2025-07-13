@@ -2,7 +2,7 @@ import { FAQManager } from "./faq-manager.js";
 
 // Configuración desde variables de entorno
 const DEBUG = process.env.DEBUG === 'true' || false;
-const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'http://localhost:11434';
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://8327ea41aae6.ngrok-free.app';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3';
 
 // Instancia de preguntas frecuentes
@@ -18,26 +18,43 @@ Respondé con claridad, usando respuestas sugeridas, y sin explicar el proceso i
 // Función para hacer request a Ollama usando fetch
 async function callOllamaAPI(prompt) {
   try {
+    if (DEBUG) {
+      console.log(`Attempting to connect to Ollama at: ${OLLAMA_BASE_URL}`);
+    }
+
     const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: OLLAMA_MODEL,
         prompt: prompt,
         stream: false
-      })
+      }),
+      // Add timeout for better error handling
+      signal: AbortSignal.timeout(10000) // 10 second timeout
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     const data = await response.json();
     return data.response;
   } catch (error) {
-    console.error('Error calling Ollama API:', error);
+    console.error('Error calling Ollama API:', error.message);
+    
+    // Provide more specific error messages
+    if (error.name === 'AbortError') {
+      throw new Error('Ollama request timed out. Make sure Ollama is running and accessible.');
+    } else if (error.code === 'ECONNREFUSED') {
+      throw new Error('Cannot connect to Ollama. Make sure Ollama is running and accessible via ngrok.');
+    } else if (error.message.includes('fetch')) {
+      throw new Error('Network error connecting to Ollama. Check if Ollama is running and ngrok is properly configured.');
+    }
+    
     throw error;
   }
 }
