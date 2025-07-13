@@ -1,87 +1,91 @@
 [
   {
     "pantalla": "Inicio",
-    "funcionalidad": "Pantalla principal con acceso rápido a funciones clave como comparar precios, reservar viajes y ver actividad reciente.",
+    "funcionalidad": "Pantalla principal con acceso rápido a funciones clave como comparar precios, reservar viajes, ver actividad reciente y acceder a tu cuenta.",
     "preguntas_ejemplo": [
       "¿Qué puedo hacer en la pantalla de inicio?",
       "¿Dónde comparo precios?",
       "¿Cómo empiezo un viaje desde el inicio?",
       "¿Cómo vuelvo al inicio?",
       "¿Puedo ver una ayuda rápida desde aquí?",
-      "¿Cómo vuelvo a ver estas opciones más adelante?"
+      "¿Cómo accedo a mi cuenta desde la pantalla principal?"
     ],
     "respuestas_sugeridas": [
       "En la pantalla de inicio podés acceder rápidamente a funciones como comparar precios, reservar un viaje o revisar tu actividad reciente.",
-      "Para comparar precios, tocá el botón correspondiente en la pantalla de inicio.",
-      "Desde el inicio podés comenzar una reserva o consultar información útil como el estado de tu cuenta.",
-      "Tocá el ícono de casa en la barra de navegación para volver al inicio en cualquier momento.",
-      "Sí, la app incluye un botón de ayuda o tutorial rápido que podés consultar desde la pantalla de inicio.",
-      "La pantalla de inicio siempre está accesible desde la barra de navegación inferior."
+      "Para comparar precios, tocá el botón 'Comparar precios' en la pantalla de inicio.",
+      "Desde el inicio podés iniciar una reserva, acceder a tu cuenta o explorar tu historial de actividad.",
+      "Tocá el ícono de casa en la barra de navegación inferior para volver al inicio en cualquier momento.",
+      "Sí, hay una sección de ayuda accesible desde el menú de inicio o mediante Tripi.",
+      "Podés acceder a tu cuenta tocando el ícono de usuario en la esquina superior derecha de la pantalla de inicio."
     ]
   },
   {
     "pantalla": "Comparar precios",
-    "funcionalidad": "Permite comparar tarifas entre diferentes servicios de transporte como Uber, Didi, y Cabify.",
+    "funcionalidad": "Permite comparar en tiempo real tarifas, tiempos estimados y disponibilidad entre servicios como Uber, Didi y Cabify.",
     "preguntas_ejemplo": [
       "¿Cómo comparo precios entre apps?",
       "¿Qué servicios puedo comparar?",
       "¿Puedo ver cuál es más barato?",
       "¿La comparación incluye tiempo estimado de llegada?",
       "¿Actualiza los precios en tiempo real?",
-      "¿Qué pasa si un servicio no aparece?"
+      "¿Qué pasa si un servicio no aparece?",
+      "¿Puedo filtrar por tipo de auto o pago?"
     ],
     "respuestas_sugeridas": [
-      "En la sección 'Comparar precios' podés ver las tarifas estimadas de Uber, Didi y Cabify para un mismo trayecto.",
-      "Sí, la app te muestra cuál es la opción más económica en tiempo real.",
-      "Simplemente ingresá origen y destino y te mostraremos las mejores opciones.",
-      "También vas a ver el tiempo estimado de llegada junto con el costo.",
-      "Los precios se actualizan automáticamente según los datos que reciben de cada servicio.",
-      "Si un servicio no aparece, puede ser que no haya disponibilidad o problema de conexión; podés intentar más tarde."
+      "En 'Comparar precios' podés ver tarifas estimadas y tiempos de Uber, Didi y Cabify en un mismo trayecto.",
+      "Podés comparar servicios disponibles en tu zona en tiempo real.",
+      "Sí, la app te muestra la opción más económica al momento.",
+      "Vas a ver también el tiempo estimado de llegada junto con el precio.",
+      "Los precios se actualizan automáticamente usando datos en vivo de cada app.",
+      "Si un servicio no aparece, puede deberse a falta de disponibilidad o conexión temporal.",
+      "En la versión premium podés aplicar filtros personalizados como tipo de auto, forma de pago o recomendaciones inteligentes."
     ]
   },
   {
     "pantalla": "Reservar",
-    "funcionalidad": "Permite elegir origen y destino, seleccionar el servicio y confirmar la reserva.",
+    "funcionalidad": "Permite elegir origen y destino, seleccionar el servicio y confirmar una reserva de forma rápida y segura.",
     "preguntas_ejemplo": [
       "¿Cómo reservo un viaje?",
       "¿Puedo elegir el tipo de auto?",
       "¿Dónde ingreso el destino?",
       "¿Qué pasa si me equivoco de dirección?",
       "¿Puedo agendar un viaje para más tarde?",
-      "¿Qué servicios están disponibles para reservar?"
+      "¿Qué servicios están disponibles para reservar?",
+      "¿Me lleva directamente a la app del servicio?"
     ],
     "respuestas_sugeridas": [
-      "Para reservar, ingresá el punto de partida y el destino, luego seleccioná el servicio que preferís.",
-      "Sí, en algunos servicios podés elegir el tipo de vehículo.",
-      "El destino se ingresa en el campo indicado dentro de la sección 'Reservar'.",
-      "Podés editar la dirección antes de confirmar la reserva.",
-      "Sí, algunos servicios permiten programar viajes para más tarde.",
-      "Dependiendo de tu ubicación, podés elegir entre Uber, Didi, Cabify y otros disponibles."
+      "Para reservar, ingresá tu origen y destino, y seleccioná el servicio que preferís.",
+      "En algunos servicios como Uber y Cabify podés elegir el tipo de vehículo.",
+      "El destino se ingresa en el campo principal dentro de la sección 'Reservar'.",
+      "Podés modificar cualquier dato antes de confirmar la reserva.",
+      "Sí, algunos servicios permiten programar un viaje con antelación.",
+      "Disponibilidad de Uber, Didi y Cabify depende de tu ubicación.",
+      "Una vez elegido el servicio, SmarTrip te redirige directamente a la app correspondiente para completar la reserva."
     ]
   },
   {
     "pantalla": "Cuenta",
-    "funcionalidad": "Gestión del perfil, datos personales, métodos de pago y configuración de la cuenta.",
+    "funcionalidad": "Permite gestionar tu perfil, datos personales, métodos de pago, configuración y preferencias.",
     "preguntas_ejemplo": [
       "¿Cómo cambio mi contraseña?",
       "¿Dónde están mis datos personales?",
       "¿Puedo actualizar mi email?",
       "¿Dónde configuro mis preferencias?",
       "¿Puedo cerrar sesión desde aquí?",
-      "¿Dónde veo mis métodos de pago guardados?"
+      "¿Cómo accedo a la versión premium?"
     ],
     "respuestas_sugeridas": [
-      "Desde la sección 'Cuenta' podés modificar tu información personal y cambiar la contraseña.",
-      "Tus datos personales están en la sección 'Cuenta' > 'Perfil'.",
-      "Sí, tocá sobre tu email actual para editarlo.",
-      "Tus preferencias se configuran dentro de 'Cuenta' > 'Configuración'.",
-      "Sí, en 'Cuenta' vas a encontrar la opción para cerrar sesión.",
-      "Tus métodos de pago están en la sección 'Método de pago' dentro del menú de cuenta."
+      "En 'Cuenta' podés cambiar tu contraseña, email y otros datos personales.",
+      "Encontrás tus datos en 'Cuenta' > 'Perfil'.",
+      "Tocá tu email actual para editarlo.",
+      "En 'Configuración' dentro de 'Cuenta' podés definir tus preferencias de uso.",
+      "Sí, hay una opción para cerrar sesión al final del menú.",
+      "Para acceder a la versión premium, andá a 'Cuenta' > 'SmarTrip Premium' y elegí el plan."
     ]
   },
   {
     "pantalla": "Actividad",
-    "funcionalidad": "Historial de viajes y comparaciones recientes.",
+    "funcionalidad": "Muestra el historial de viajes, búsquedas y comparaciones realizadas recientemente.",
     "preguntas_ejemplo": [
       "¿Dónde veo mis viajes anteriores?",
       "¿Puedo ver los precios que comparé antes?",
@@ -91,17 +95,17 @@
       "¿La app guarda todas mis búsquedas?"
     ],
     "respuestas_sugeridas": [
-      "La sección 'Actividad' muestra tu historial de viajes y comparaciones.",
-      "Sí, en 'Actividad' podés revisar tus búsquedas recientes.",
-      "Accedé a 'Actividad' desde el menú principal para ver todos tus movimientos.",
-      "Sí, podés ver un resumen de todos tus viajes y comparaciones recientes.",
-      "Actualmente no es posible borrar el historial, pero podés ocultar elementos.",
-      "La app guarda automáticamente las búsquedas para que las consultes más tarde."
+      "En 'Actividad' podés revisar tus viajes anteriores y comparaciones recientes.",
+      "Sí, podés ver búsquedas pasadas con detalles del precio y horario.",
+      "Desde el menú 'Actividad' tenés acceso a todo tu historial reciente.",
+      "El resumen incluye tanto viajes como comparaciones, si usás la app logueado.",
+      "Por ahora no es posible borrar el historial, pero se está considerando para futuras versiones.",
+      "Guardamos tus búsquedas para ayudarte a tomar decisiones más rápidas después."
     ]
   },
   {
     "pantalla": "Método de pago",
-    "funcionalidad": "Configuración de tarjetas o métodos de pago preferidos.",
+    "funcionalidad": "Gestión de métodos de pago vinculados a tu cuenta: agregar, modificar o eliminar tarjetas.",
     "preguntas_ejemplo": [
       "¿Cómo agrego una tarjeta?",
       "¿Puedo pagar en efectivo?",
@@ -112,11 +116,59 @@
     ],
     "respuestas_sugeridas": [
       "Para agregar una tarjeta, andá a 'Método de pago' y seleccioná 'Agregar'.",
-      "Dependiendo del servicio, algunos permiten pagar en efectivo.",
-      "Podés configurar tu método de pago desde el menú de cuenta o antes de reservar.",
-      "Para eliminar una tarjeta, mantené presionado el método y seleccioná 'Eliminar'.",
-      "Sí, podés guardar varios métodos de pago y elegir uno por defecto.",
-      "La app usa cifrado y cumple con normas de seguridad para proteger tus datos."
+      "Algunos servicios permiten pagar en efectivo; se te indicará al momento de reservar.",
+      "Podés cambiar el método de pago desde tu cuenta o justo antes de hacer una reserva.",
+      "Mantené presionado el método que querés eliminar y seleccioná 'Eliminar'.",
+      "Sí, podés tener varias tarjetas y elegir una predeterminada.",
+      "Tus datos están protegidos con cifrado seguro y estándares internacionales."
+    ]
+  },
+  {
+    "pantalla": "Premium",
+    "funcionalidad": "Acceso a funciones avanzadas como filtros personalizados, recomendaciones inteligentes, estadísticas y sin anuncios.",
+    "preguntas_ejemplo": [
+      "¿Qué incluye SmarTrip Premium?",
+      "¿Cuánto cuesta el plan premium?",
+      "¿Puedo probarlo gratis?",
+      "¿Vale la pena pagar la versión premium?",
+      "¿Cómo activo el premium?",
+      "¿Qué beneficios me da frente a la versión gratuita?"
+    ],
+    "respuestas_sugeridas": [
+      "SmarTrip Premium incluye filtros avanzados, recomendaciones inteligentes, estadísticas de viaje y navegación sin anuncios.",
+      "El precio del plan aparece en la sección 'Cuenta' > 'SmarTrip Premium'.",
+      "En ocasiones ofrecemos períodos de prueba gratuita, según promociones vigentes.",
+      "Premium te ahorra más tiempo y mejora la personalización, ideal si usás transporte a diario.",
+      "Podés activar la versión premium desde tu perfil, seleccionando 'Activar Premium'.",
+      "En comparación con la versión gratuita, Premium te da más control y una experiencia más fluida."
+    ]
+  },
+  {
+    "pantalla": "General",
+    "funcionalidad": "Respuestas generales sobre la app SmarTrip y el asistente virtual Tripi.",
+    "preguntas_ejemplo": [
+      "¿Qué es SmarTrip?",
+      "¿Para qué sirve esta app?",
+      "¿Sos una app de transporte?",
+      "¿Quién sos?",
+      "¿Qué hacés vos?",
+      "¿Cómo me podés ayudar?",
+      "¿Por qué debería usar SmarTrip?",
+      "¿Tripi es una persona?",
+      "¿Cómo funciona SmarTrip?",
+      "¿SmarTrip está disponible en todo el país?"
+    ],
+    "respuestas_sugeridas": [
+      "SmarTrip es una app inteligente que te ayuda a comparar precios y servicios de transporte como Uber, Cabify y Didi.",
+      "No somos una app de transporte, sino un comparador neutral que te ayuda a elegir la opción más conveniente en cada viaje.",
+      "Soy Tripi, tu asistente virtual dentro de SmarTrip. Estoy acá para ayudarte a navegar la app y resolver tus dudas.",
+      "Te puedo ayudar a comparar precios, reservar viajes, gestionar tu cuenta, ver tu historial y más.",
+      "SmarTrip te permite ahorrar tiempo y dinero, ofreciéndote información clara y actualizada sobre las mejores opciones de transporte.",
+      "Tripi no es una persona real, sino un asistente virtual creado para que tu experiencia en SmarTrip sea más fácil y rápida.",
+      "Con SmarTrip podés comparar servicios en tiempo real, elegir la opción más económica o rápida, y redirigirte directamente a la app de tu preferencia.",
+      "Estamos en expansión, pero podés usar SmarTrip en la mayoría de las ciudades donde operan Uber, Cabify o Didi.",
+      "Nuestro objetivo es que tomes decisiones informadas, sin tener que revisar manualmente cada app por separado.",
+      "Si tenés alguna duda sobre cómo usar la app, ¡acá estoy para ayudarte!"
     ]
   }
 ]
