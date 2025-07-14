@@ -359,7 +359,7 @@ async function chatWithAgent(message, conversationHistory = []) {
       console.log('Contexto actual:', obtenerContextoActual(conversationHistory));
     }
 
-    // Si es el primer mensaje o es un saludo, mostrar menú principal SOLO si no es repetido
+    // Si es el primer mensaje o es un saludo mostrar menú principal SOLO si no es repetido
     if (
       conversationHistory.length === 0 ||
       message.toLowerCase().includes('hola') ||
