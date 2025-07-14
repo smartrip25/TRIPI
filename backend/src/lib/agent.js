@@ -2,7 +2,7 @@ import { FAQManager } from "./faq-manager.js";
 
 // Configuración desde variables de entorno
 const DEBUG = process.env.DEBUG === 'true' || true; // Forzar debug para testing
-const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://d628ac2d10fc.ngrok-free.app';
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://8c26a2dde666.ngrok-free.app';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'gemma3:1b';
 
 // Instancia de preguntas frecuentes
@@ -78,7 +78,9 @@ function generarMenuPrincipal() {
     { letra: 'E', pantalla: 'Actividad', descripcion: 'Historial de viajes' },
     { letra: 'F', pantalla: 'Método de pago', descripcion: 'Gestionar métodos de pago' },
     { letra: 'G', pantalla: 'Premium', descripcion: 'Funciones avanzadas' },
-    { letra: 'H', pantalla: 'General', descripcion: 'Información general sobre SmarTrip' }
+    { letra: 'H', pantalla: 'General', descripcion: 'Información general sobre SmarTrip' },
+    { letra: 'I', pantalla: 'Personalizada', descripcion: 'Hacer una pregunta personalizada' }
+
   ];
 
   const menu = opciones.map(op => 
@@ -231,6 +233,7 @@ function procesarSeleccionSubmenu(seleccion, submenuData) {
 async function generarRespuestaPersonalizada(pregunta) {
   try {
     // Construir contexto con TODAS las FAQ
+        console.log("ingtentando");
     const todasLasFaqs = faq.pantallas
       .map(p => {
         return p.preguntas_ejemplo.map((q, i) =>
@@ -256,7 +259,7 @@ Respuesta:
   } catch (error) {
     console.error('Error generating personal response:', error);
     return {
-      respuesta: "No tengo información sobre eso.",
+      respuesta: "No tengo información sobre eso." + error,
       fuente: 'Error'
     };
   }
