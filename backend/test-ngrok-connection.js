@@ -20,8 +20,9 @@ const mockRes = {
 
 // Test the chat controller with ngrok connection
 async function testNgrokConnection() {
+  const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://d628ac2d10fc.ngrok-free.app';
   console.log('🧪 Testing ngrok connection to Ollama...');
-  console.log('📡 Using URL: https://8327ea41aae6.ngrok-free.app/api/generate');
+  console.log('📡 Using URL:', `${OLLAMA_BASE_URL}/api/generate`);
   console.log('📝 Request:', mockReq.body);
   
   try {

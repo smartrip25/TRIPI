@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { chatController } from '../controllers/api.controllers.js';
+import { chatController, resetChatController } from '../controllers/api.controllers.js';
 
 const router = Router();
 
@@ -10,7 +10,8 @@ router.get('/', (req, res) => {
     endpoints: {
       'GET /api/': 'API information (this endpoint)',
       'GET /api/test': 'Test endpoint for connection check',
-      'POST /api/chat': 'Chat endpoint for AI responses'
+      'POST /api/chat': 'Chat endpoint for AI responses',
+      'POST /api/reset-chat': 'Reset chat endpoint'
     },
     status: 'ok'
   });
@@ -23,5 +24,8 @@ router.get('/test', (req, res) => {
 
 // Chat endpoint
 router.post('/chat', chatController);
+
+// Reset chat endpoint
+router.post('/reset-chat', resetChatController);
 
 export default router;

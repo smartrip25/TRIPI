@@ -11,7 +11,8 @@ console.log('📋 Checking requirements...');
 // Check if Ollama is running
 async function checkOllama() {
   try {
-    const response = await fetch('https://8327ea41aae6.ngrok-free.app/api/tags');
+    const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://d628ac2d10fc.ngrok-free.app';
+    const response = await fetch(`${OLLAMA_BASE_URL}/api/tags`);
     if (response.ok) {
       console.log('✅ Ollama is running');
       const data = await response.json();

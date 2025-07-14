@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node start-server.js",
-
     "server": "node src/app.js",
     "test-ollama": "node test-ollama.js",
     "test-ngrok": "node test-ngrok-connection.js"
@@ -16,7 +15,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }
