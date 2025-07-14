@@ -405,7 +405,7 @@ async function chatWithAgent(message, conversationHistory = []) {
     // Obtener el contexto actual
     const contexto = obtenerContextoActual(conversationHistory);
 
-    // Si estamos en un submenú y el mensaje es una letra, procesar como selección de submenú
+    // Si estamos en un submenú y el mensaje es exactamente una letra, procesar como selección de submenú
     if (contexto.tipo === 'submenu' && /^[A-Z]$/i.test(message.trim())) {
       const resultado = procesarSeleccionSubmenu(message, contexto.data);
       if (resultado) {
@@ -430,8 +430,8 @@ async function chatWithAgent(message, conversationHistory = []) {
       }
     }
 
-    // Si el mensaje es muy corto o parece una selección de menú principal
-    if (message.length <= 3 || /^[A-I]$/i.test(message.trim())) {
+    // Si el mensaje es exactamente una letra de menú principal
+    if (/^[A-I]$/i.test(message.trim())) {
       // Si no es la primera conversación, usar menú con pregunta personalizada
       const menu = conversationHistory.length > 0 ? generarMenuConPersonalizada() : generarMenuPrincipal();
       const pantallaSeleccionada = procesarSeleccionMenu(message, menu.opciones);
@@ -440,7 +440,7 @@ async function chatWithAgent(message, conversationHistory = []) {
       if (pantallaSeleccionada === 'Personalizada') {
         return {
           data: {
-            result: '¡Perfecto! Escribí tu pregunta personalizada sobre SmarTrip y te ayudo con lo que sé.\n\nA. Volver',
+            result: '¡Elegiste hacer una pregunta personalizada!\n\nPor favor, escribí tu pregunta sobre SmarTrip en el cuadro de abajo y presioná enviar.\n\nA. Volver',
             menu: generarMenuVolver()
           }
         };
@@ -458,7 +458,7 @@ async function chatWithAgent(message, conversationHistory = []) {
       }
     }
 
-    // Si es una pregunta personalizada, procesarla
+    // Si no es una selección de menú ni submenú, procesar como pregunta personalizada
     const respuestaPersonalizada = await generarRespuestaPersonalizada(message);
     const respuestaConVolver = generarRespuestaConVolver(respuestaPersonalizada.respuesta, false);
     const menuConPersonalizada = generarMenuConPersonalizada();

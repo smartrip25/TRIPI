@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 export default function MessageBubble({ text, from }) {
   const isUser = from === 'user';
@@ -8,9 +8,24 @@ export default function MessageBubble({ text, from }) {
   const displayText = typeof text === 'string' ? text : String(text || '');
 
   return (
-    <View style={[styles.message, isUser ? styles.user : styles.bot]}>
-      <Text style={[styles.text, isUser && styles.userText]}>{displayText}</Text>
-    </View>
+    isUser ? (
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+        <View style={[styles.message, styles.user]}>
+          <Text style={[styles.text, styles.userText]}>{displayText}</Text>
+        </View>
+      </View>
+    ) : (
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+        <Image
+          source={require('../fotos/tripi 3.0.png')}
+          style={{ width: 32, height: 32, borderRadius: 16, marginRight: 8 }}
+          resizeMode="cover"
+        />
+        <View style={[styles.message, styles.bot]}>
+          <Text style={styles.text}>{displayText}</Text>
+        </View>
+      </View>
+    )
   );
 }
 

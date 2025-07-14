@@ -38,7 +38,7 @@ const ChatScreen = () => {
 
   const testServerConnection = async () => {
     try {
-      const response = await fetch('https://tripi-nu.vercel.app/api/test');
+      const response = await fetch('http://localhost:3000/api/test');
       if (response.ok) {
         setServerStatus('connected');
       } else {
@@ -96,7 +96,7 @@ const ChatScreen = () => {
     setIsNewChat(false);
 
     try {
-      const res = await fetch('https://tripi-nu.vercel.app/api/chat', {
+      const res = await fetch('http://localhost:3000/api/chat', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
