@@ -12,7 +12,7 @@ Ollama corre en Ngrok --> el backend corre en Vercel --> el frontend corre en ex
 --> Instalar Ollama (ollama run gemma3:1b)
 --> Instalar Ngrok (npm i ngrok)
 --> Ejecutar: 
-    $env:OLLAMA_HOST="0.0.0.0" (hace que cualquier usuario pueda acceder a la conexión)
+    $env/set:OLLAMA_HOST="0.0.0.0" (hace que cualquier usuario pueda acceder a la conexión)
     ollama serve (ejecuta Ollama localmente)
     ngrok http 11434 (expone Ollama a Ngrok)
       --> Poner el link que te da en el backend en donde este configurado el link de ngrok (archivo .env, donde dice OLLAMA_BASE_URL), y también como environment variable en Vercel.

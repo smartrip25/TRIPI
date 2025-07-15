@@ -2,11 +2,45 @@ import { FAQManager } from "./faq-manager.js";
 
 // Configuración desde variables de entorno
 const DEBUG = process.env.DEBUG === 'true' || true; // Forzar debug para testing
-const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || 'https://8c26a2dde666.ngrok-free.app';
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL || ' https://ea49db94ef88.ngrok-free.app';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'gemma3:1b';
 
 // Instancia de preguntas frecuentes
 const faq = new FAQManager();
+
+// MEJORA: Cache simple para respuestas
+const responseCache = new Map();
+const CACHE_TTL = 1000 * 60 * 60; // 1 hora
+
+// Función para limpiar cache expirado
+function limpiarCache() {
+  const ahora = Date.now();
+  for (const [key, value] of responseCache.entries()) {
+    if (ahora - value.timestamp > CACHE_TTL) {
+      responseCache.delete(key);
+    }
+  }
+}
+
+// Función para obtener respuesta del cache
+function obtenerDelCache(pregunta) {
+  limpiarCache();
+  const cacheKey = pregunta.toLowerCase().trim();
+  const cached = responseCache.get(cacheKey);
+  if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
+    return cached.response;
+  }
+  return null;
+}
+
+// Función para guardar en cache
+function guardarEnCache(pregunta, respuesta) {
+  const cacheKey = pregunta.toLowerCase().trim();
+  responseCache.set(cacheKey, {
+    response: respuesta,
+    timestamp: Date.now()
+  });
+}
 
 // Prompt del sistema para Ollama
 const systemPrompt = `
@@ -232,34 +266,69 @@ function procesarSeleccionSubmenu(seleccion, submenuData) {
 // Función para generar respuesta con Ollama para preguntas personalizadas
 async function generarRespuestaPersonalizada(pregunta) {
   try {
-    // Construir contexto con TODAS las FAQ
-        console.log("ingtentando");
-    const todasLasFaqs = faq.pantallas
-      .map(p => {
-        return p.preguntas_ejemplo.map((q, i) =>
+    // MEJORA: Verificar cache primero
+    const cachedResponse = obtenerDelCache(pregunta);
+    if (cachedResponse) {
+      return {
+        respuesta: cachedResponse,
+        fuente: 'Cache',
+        resultadosUsados: 0
+      };
+    }
+
+    // MEJORA: Usar retrieval inteligente en lugar de todas las FAQ
+    const resultadosRelevantes = faq.buscarPorPregunta(pregunta);
+    
+    let contexto = '';
+    if (resultadosRelevantes && resultadosRelevantes.length > 0) {
+      // Tomar solo los 3 resultados más relevantes
+      const topResultados = resultadosRelevantes.slice(0, 3);
+      contexto = topResultados.map(r => 
+        `Q: ${r.pregunta}\nA: ${r.respuesta}`
+      ).join('\n\n');
+    } else {
+      // Fallback: usar información general si no hay resultados específicos
+      const infoGeneral = faq.pantallas
+        .filter(p => p.pantalla === 'General')
+        .map(p => p.preguntas_ejemplo.map((q, i) =>
           `Q: ${q}\nA: ${p.respuestas_sugeridas[i] || ''}`
-        ).join('\n');
-      })
-      .join('\n');
+        ).join('\n'))
+        .join('\n');
+      contexto = infoGeneral;
+    }
 
     const prompt = `
-Respondé SOLO usando la siguiente información de las FAQ. Si no hay información, decí: "No tengo información sobre eso".
+Sos Tripi, asistente de SmarTrip. REGLAS IMPORTANTES:
 
-${todasLasFaqs}
+1. SOLO usa información de las FAQ proporcionadas
+2. NO inventes NUNCA información que no esté en las FAQ
+3. Puedes ser carismático y amigable, pero siempre basado en datos reales
+4. Responde de manera natural y conversacional
+5. Si no tienes información específica, di "No tengo información sobre eso"
+6. NO sugieras funciones que no estén en las FAQ
+
+Información disponible:
+${contexto}
 
 Pregunta del usuario: ${pregunta}
 Respuesta:
     `.trim();
 
     const response = await callOllamaAPI(prompt);
+    const respuestaLimpia = cleanResponse(response);
+    
+    // MEJORA: Guardar en cache
+    guardarEnCache(pregunta, respuestaLimpia);
+    
     return {
-      respuesta: cleanResponse(response),
-      fuente: 'Ollama'
+      respuesta: respuestaLimpia,
+      fuente: 'Ollama',
+      resultadosUsados: resultadosRelevantes ? resultadosRelevantes.length : 0
     };
   } catch (error) {
     console.error('Error generating personal response:', error);
     return {
-      respuesta: "No tengo información sobre eso." + error,
+      respuesta: "No tengo información sobre eso.",
       fuente: 'Error'
     };
   }

@@ -253,15 +253,69 @@ export class FAQManager {
     // Coincidencia en respuesta
     if (resultado.respuesta.toLowerCase().includes(lowerConsulta)) score += 4;
     
-    // Coincidencia parcial
-    const palabrasConsulta = lowerConsulta.split(' ').filter(p => p.length > 2);
-    palabrasConsulta.forEach(palabra => {
-      if (resultado.pregunta.toLowerCase().includes(palabra)) score += 3;
-      if (resultado.pantalla.toLowerCase().includes(palabra)) score += 2;
-      if (resultado.funcionalidad.toLowerCase().includes(palabra)) score += 1;
-    });
+    // MEJORA: Similitud semántica usando embeddings simples
+    score += this.calcularSimilitudSemantica(consulta, resultado);
     
     return score;
+  }
+
+  // MEJORA: Función para calcular similitud semántica
+  calcularSimilitudSemantica(consulta, resultado) {
+    const palabrasConsulta = this.extraerPalabrasClave(consulta);
+    const palabrasResultado = this.extraerPalabrasClave(
+      `${resultado.pregunta} ${resultado.respuesta} ${resultado.funcionalidad}`
+    );
+    
+    let similitud = 0;
+    
+    // Mapeo de sinónimos y conceptos relacionados
+    const conceptosRelacionados = {
+      'precio': ['costo', 'tarifa', 'valor', 'cuánto', 'dinero'],
+      'viaje': ['traslado', 'transporte', 'recorrido', 'destino'],
+      'reserva': ['agendar', 'programar', 'booking', 'cita'],
+      'app': ['aplicación', 'aplicativo', 'programa'],
+      'comparar': ['comparación', 'elegir', 'seleccionar'],
+      'pago': ['tarjeta', 'efectivo', 'transferencia', 'dinero'],
+      'cuenta': ['perfil', 'usuario', 'datos', 'configuración'],
+      'historial': ['actividad', 'reciente', 'anterior', 'pasado']
+    };
+    
+    for (const palabraConsulta of palabrasConsulta) {
+      for (const palabraResultado of palabrasResultado) {
+        // Coincidencia exacta
+        if (palabraConsulta === palabraResultado) {
+          similitud += 3;
+        }
+        // Coincidencia parcial
+        else if (palabraConsulta.includes(palabraResultado) || palabraResultado.includes(palabraConsulta)) {
+          similitud += 2;
+        }
+        // Conceptos relacionados
+        else {
+          for (const [concepto, sinonimos] of Object.entries(conceptosRelacionados)) {
+            if (sinonimos.includes(palabraConsulta) && sinonimos.includes(palabraResultado)) {
+              similitud += 1.5;
+            }
+          }
+        }
+      }
+    }
+    
+    return similitud;
+  }
+
+  // Función para extraer palabras clave
+  extraerPalabrasClave(texto) {
+    const stopWords = ['el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o', 'pero', 'si', 'no', 'que', 'como', 'cuando', 'donde', 'por', 'para', 'con', 'sin', 'sobre', 'entre', 'detrás', 'delante', 'encima', 'debajo', 'dentro', 'fuera', 'cerca', 'lejos', 'antes', 'después', 'ahora', 'siempre', 'nunca', 'a veces', 'mucho', 'poco', 'más', 'menos', 'muy', 'bastante', 'demasiado', 'todo', 'nada', 'algo', 'nadie', 'alguien', 'cualquiera', 'cada', 'cual', 'cuál', 'qué', 'quién', 'dónde', 'cuándo', 'cómo', 'por qué', 'cuánto', 'cuánta', 'cuántos', 'cuántas'];
+    
+    return texto.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(' ')
+      .filter(palabra => 
+        palabra.length > 2 && 
+        !stopWords.includes(palabra) &&
+        !/^\d+$/.test(palabra)
+      );
   }
 
   listarPreguntasPorPantalla(nombrePantalla) {
